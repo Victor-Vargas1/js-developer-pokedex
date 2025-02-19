@@ -5,12 +5,19 @@ function convertPokeApiDetailToPokemon(pokeDetail) {
     const pokemon = new Pokemon()
     pokemon.number = pokeDetail.id
     pokemon.name = pokeDetail.name
+    pokemon.moves = pokeDetail.moves
 
+    // Capturando os tipos
     const types = pokeDetail.types.map((typeSlot) => typeSlot.type.name)
     const [type] = types
 
     pokemon.types = types
     pokemon.type = type
+
+    // Capturando os movimentos (limitar a 4 para não ficar muito extenso)
+    pokemon.moves = pokeDetail.moves
+    .slice (0, 4) // Pega os 4 primeiros movimentos
+    .map((move) => move.move.name) //Extrai os nomes dos movimentos 
 
     pokemon.photo = pokeDetail.sprites.other.dream_world.front_default
 
@@ -33,3 +40,4 @@ pokeApi.getPokemons = (offset = 0, limit = 5) => {
         .then((detailRequests) => Promise.all(detailRequests))
         .then((pokemonsDetails) => pokemonsDetails)
 }
+
